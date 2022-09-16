@@ -1,0 +1,250 @@
+@startuml
+class twisk.mondeIG.ActiviteIG {
+}
+abstract class twisk.vues.VueEtapeIG {
+- void dragDetected(MouseEvent)
++ EtapeIG getEtape()
+}
+class twisk.mondeIG.PointDeControleIG {
+- int posX
+- int posY
+- String id
++ void changePos(int,int)
++ int getPosX()
++ int getPosY()
++ String getId()
++ EtapeIG getEtape()
+}
+class twisk.exceptions.DepartSurArriveeException {
+}
+abstract class twisk.mondeIG.EtapeIG {
+# String nom
+# String identifiant
+# int posX
+# int posY
+# boolean estSelectionnee
+# boolean estUneEntree
+# boolean estUneSortie
+# int delai
+# int ecart
++ String getNom()
++ int getPosX()
++ int getPosY()
++ void changePos()
++ void repositionnerPdcs()
++ Iterator<PointDeControleIG> iterator()
++ PointDeControleIG getPdcI(int)
++ String getIdentifiant()
++ void setNom(String)
++ boolean estSelectionnee()
++ void inverseSelectionnee()
++ void inverseEstUneEntree()
++ boolean estUneEntree()
++ void inverseEstUneSortie()
++ boolean estUneSortie()
++ void changePos(int,int)
++ void setDelai(int)
++ void setEcart(int)
++ int getDelai()
++ int getEcart()
+}
+class twisk.outils.TailleComposants {
+- int largeurActivite
+- int hauteurActivite
+- int tailleBouton
+- int largeurFenetre
+- int hauteurFenetre
+- int rayonPtsDeCtrl
+- int tailleIconeEntreeSortie
+- {static} TailleComposants instance
++ {static} TailleComposants getInstance()
++ int getLargeurActivite()
++ int getHauteurActivite()
++ int getTailleBouton()
++ int getLargeurFenetre()
++ int getHauteurFenetre()
++ int getRayonPtsDeCtrl()
++ int getTailleIconeEntreeSortie()
+}
+class twisk.vues.VueArcIG {
++ void reagir()
++ void setColor(Color)
+}
+class twisk.mondeIG.ArcIG {
+- boolean estSelectionnee
++ PointDeControleIG getPt1()
++ PointDeControleIG getPt2()
++ boolean estRelieAEtape(EtapeIG)
++ boolean estSelectionnee()
++ void inverseSelectionnee()
+}
+class twisk.tests.MondeIGTest {
+~ void setUp()
+~ void ajouter()
+~ void iterator()
+~ void testAjouter()
+~ void supprimerLaSelection()
+}
+class twisk.tests.PointDeControleIGTest {
+~ void setUp()
+~ void changePos()
+}
+class twisk.outils.FabriqueIdentifiant {
+- int noEtape
+- int ptsDeCtrlID
+- {static} FabriqueIdentifiant instance
++ {static} FabriqueIdentifiant getInstance()
++ String getIdentifiantEtape()
++ String getIDPointDeControle()
++ void resetIdEtape()
+}
+class twisk.tests.FabriqueIdentifiantTest {
+~ void setUp()
+~ void getIdentifiantEtape()
+}
+class twisk.mondeIG.MondeIG {
+- String pdcId
+- String style
++ void ajouter(String)
++ Iterator<EtapeIG> iterateurEtape()
++ Iterator<ArcIG> iterateurArc()
++ EtapeIG getEtape(String)
++ int nbEtapes()
++ void ajouter(PointDeControleIG,PointDeControleIG)
++ void cliqueSurPDC(PointDeControleIG)
++ int getNbArcs()
++ void etapeSelectionee(EtapeIG)
++ void supprimerLaSelection()
++ void supprimer(Iterator<EtapeIG>)
++ void renommerEtapeSelectionnee(String)
++ int nbEtapesSelectionnees()
++ void deplacerEtape(String,int,int)
++ void arcSelectione(ArcIG)
++ void supprimerLesArcsSelectionnes()
++ void effacerLaSelection()
++ void gestionEntree()
++ void gestionSorties()
++ void changerDelaiEtapeSelectionnee(String)
++ void changerEcartEtapeSelectionnee(String)
++ void setStyle(String)
++ String getStyle()
+}
+class twisk.vues.VueMondeIG {
++ void reagir()
+- void gererStyle()
++ void creerEtapesEtPdc()
+- void dragDropped(DragEvent)
+- void dragOver(DragEvent)
+}
+class twisk.MainTwisk {
++ void start(Stage)
++ {static} void main(String[])
+}
+class twisk.vues.VueMenu {
+- void afficherFenetreDemandeNom()
+- void afficherFenetresDemandeDelai()
+- void afficherFenetresDemandeEcart()
+- void afficherFenetreErreur(ParamIncorrectsException)
++ void reagir()
+}
+class twisk.vues.VueOutils {
++ void reagir()
+}
+class twisk.vues.VuePointDeControleIG {
++ void reagir()
+}
+class twisk.designPattern.SujetObserve {
++ void ajouterObservateur(Observateur)
++ void notifierObservateur()
+}
+abstract class twisk.exceptions.TwiskException {
+}
+interface twisk.designPattern.Observateur {
+~ void reagir()
+}
+class twisk.exceptions.MemeEtapeException {
+}
+class twisk.exceptions.ExisteDejaException {
+}
+class twisk.vues.VueActiviteIG {
++ void reagir()
+}
+class twisk.exceptions.ParamIncorrectsException {
+}
+class javafx.scene.control.Label {
+}
+class javafx.scene.layout.HBox {
+}
+class javafx.scene.shape.Line {
+}
+class javafx.scene.shape.Polyline {
+}
+class javafx.scene.control.Menu {
+}
+class javafx.scene.control.Button {
+}
+
+twisk.mondeIG.EtapeIG <|-- twisk.mondeIG.ActiviteIG
+twisk.designPattern.Observateur <|.. twisk.vues.VueEtapeIG
+javafx.scene.layout.VBox <|-- twisk.vues.VueEtapeIG
+twisk.exceptions.TwiskException <|-- twisk.exceptions.DepartSurArriveeException
+twisk.mondeIG.Iterable <|.. twisk.mondeIG.EtapeIG
+twisk.designPattern.Observateur <|.. twisk.vues.VueArcIG
+javafx.scene.layout.Pane <|-- twisk.vues.VueArcIG
+twisk.designPattern.SujetObserve <|-- twisk.mondeIG.MondeIG
+twisk.designPattern.Observateur <|.. twisk.vues.VueMondeIG
+javafx.scene.layout.Pane <|-- twisk.vues.VueMondeIG
+javafx.application.Application <|-- twisk.MainTwisk
+twisk.designPattern.Observateur <|.. twisk.vues.VueMenu
+twisk.vues.MenuBar <|-- twisk.vues.VueMenu
+twisk.designPattern.Observateur <|.. twisk.vues.VueOutils
+javafx.scene.layout.TilePane <|-- twisk.vues.VueOutils
+twisk.designPattern.Observateur <|.. twisk.vues.VuePointDeControleIG
+javafx.scene.shape.Circle <|-- twisk.vues.VuePointDeControleIG
+twisk.exceptions.Exception <|-- twisk.exceptions.TwiskException
+twisk.exceptions.TwiskException <|-- twisk.exceptions.MemeEtapeException
+twisk.exceptions.TwiskException <|-- twisk.exceptions.ExisteDejaException
+twisk.vues.VueEtapeIG <|-- twisk.vues.VueActiviteIG
+twisk.exceptions.TwiskException <|-- twisk.exceptions.ParamIncorrectsException
+
+twisk.tests.MondeIGTest -- "1" twisk.mondeIG.MondeIG
+twisk.tests.MondeIGTest -- "1" twisk.outils.FabriqueIdentifiant
+
+twisk.tests.FabriqueIdentifiantTest -- "1" twisk.outils.FabriqueIdentifiant
+twisk.tests.PointDeControleIGTest -- "2" twisk.mondeIG.PointDeControleIG
+twisk.tests.PointDeControleIGTest -- "1" twisk.mondeIG.ActiviteIG
+
+twisk.mondeIG.MondeIG -- "*" twisk.mondeIG.EtapeIG
+twisk.mondeIG.MondeIG -- "*" twisk.mondeIG.ArcIG
+
+twisk.mondeIG.EtapeIG -- "*" twisk.mondeIG.PointDeControleIG
+
+twisk.mondeIG.ArcIG -- "2" twisk.mondeIG.PointDeControleIG
+
+twisk.mondeIG.PointDeControleIG -- "1" twisk.mondeIG.EtapeIG
+
+twisk.designPattern.SujetObserve -- "*" twisk.designPattern.Observateur
+
+twisk.vues.VueMenu -- "1" twisk.mondeIG.MondeIG
+twisk.vues.VueMenu -- "2" javafx.scene.control.Menu
+
+twisk.vues.VueMondeIG -- "1" twisk.mondeIG.MondeIG
+
+twisk.vues.VueArcIG -- "1" twisk.mondeIG.MondeIG
+twisk.vues.VueArcIG -- "1" twisk.mondeIG.ArcIG
+twisk.vues.VueArcIG -- "1" javafx.scene.shape.Line
+twisk.vues.VueArcIG -- "1" javafx.scene.shape.Polyline
+
+twisk.vues.VueActiviteIG -- "1" javafx.scene.layout.HBox
+
+twisk.vues.VueOutils -- "1" twisk.mondeIG.MondeIG
+twisk.vues.VueOutils -- "1" javafx.scene.control.Button
+
+twisk.vues.VueEtapeIG -- "1" twisk.mondeIG.MondeIG
+twisk.vues.VueEtapeIG -- "1" twisk.mondeIG.EtapeIG
+twisk.vues.VueEtapeIG -- "1" javafx.scene.control.Label
+
+twisk.vues.VuePointDeControleIG -- "1" twisk.mondeIG.MondeIG
+twisk.vues.VuePointDeControleIG -- "1" twisk.mondeIG.PointDeControleIG
+
+@enduml
